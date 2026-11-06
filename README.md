@@ -1,34 +1,89 @@
 # EnergyLens
 
-Laboratório virtual para comparar potência, aquecimento e desempenho de um mesmo computador. A tela abre diretamente nos ensaios. Os parâmetros são ilustrativos.
+Demonstração de desperdício de energia em computadores para apresentação de aproximadamente dois minutos. Abre diretamente no painel, sem cadastro ou configuração prévia.
 
-## Execução
+## Executar
 
-Na pasta que contém `app.py`:
+Requer Python 3.10 ou superior. Extraia o ZIP e abra o terminal na pasta que contém app.py.
+
+```bash
+python -m venv .venv
+```
+
+No Windows:
+
+```powershell
+.venv\Scripts\activate
+```
+
+No macOS ou Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+Instale e execute:
 
 ```bash
 python -m pip install -r requirements.txt
 python -m streamlit run app.py
 ```
 
-Para o Streamlit Community Cloud, selecione `app.py` como arquivo principal. A versão anterior fica disponível localmente por `python -m streamlit run app_original.py`.
+Abra http://localhost:8501. O tema é carregado da pasta .streamlit, por isso execute na pasta do projeto. A interface não requer serviços externos, sensores ou conta. Faça a instalação das dependências antes do evento.
 
-## Roteiro para a banca
+## Demonstração
 
-1. **Carga.** Use Processamento de IA e compare a referência de 25% com 100%. Mostre primeiro a potência. Selecione a temperatura da CPU no gráfico para mostrar o aquecimento gradual.
-2. **Refrigeração.** Mantenha a atividade e a carga. Compare a condição adequada com a insuficiente. Mostre o cruzamento do limiar e depois selecione frequência ou desempenho no gráfico. A comparação conserva as temperaturas iniciais e a duração.
-3. **Tensão.** Use refrigeração adequada e teste 70 mV de redução. Mostre a queda de potência com desempenho equivalente no cenário padrão. Depois teste 180 mV. O gráfico de desempenho mostra a interrupção do trabalho no travamento simulado.
+1. Observe os quatro indicadores de um PC intermediário executando navegador e documentos.
+2. Clique em **Simular desperdício**. O consumo extra de processos em segundo plano aparece imediatamente e dispara o alerta.
+3. Clique em **Aplicar otimização**. A mesma tela compara potência, temperatura, percentual de redução, energia e custo mensal.
+4. Use **Reiniciar** para uma nova apresentação. A tarifa configurada é mantida.
 
-Os detalhes de tensão, corrente, frequência, potência por componente, energia e eficiência ficam em **Dados dos dois cenários**. O painel **Configuração do ensaio** permite alterar duração, frequência alvo e teto elétrico da CPU.
+Os dois cliques não impõem duração mínima. O roteiro em docs/ROTEIRO_HACKATHON.md distribui a explicação em 120 segundos, dentro da faixa solicitada de 90 a 150 segundos. A duração ao vivo depende do apresentador.
 
-## Método e interpretação
+## Valores e limites
 
-* O computador intermediário reaproveita os perfis de CPU, GPU e componentes auxiliares do projeto anterior. A integração da energia e a resposta térmica exponencial também reaproveitam funções existentes.
-* O modelo de ensaio calcula potência dinâmica proporcional à atividade, ao quadrado da tensão e à frequência. A corrente estimada de cada chip segue I = P/V. Os valores de tensão são internos aos circuitos modelados.
-* A refrigeração altera as resistências de condução e convecção. A CPU e a GPU têm temperaturas independentes. Acima dos limiares ilustrativos de 84 °C e 83 °C, respectivamente, a frequência efetiva cai e a potência é recalculada.
-* A redução de tensão atua na CPU. Se ela ficar abaixo da margem de estabilidade do modelo, o trabalho útil é afetado e a exposição pode causar travamento. O gráfico inclui a interrupção do processamento.
-* O índice de desempenho é relativo ao máximo teórico da mesma atividade. Desempenho por watt é o índice médio dividido pela potência total média. Os resultados servem para comparação virtual. Os parâmetros ainda exigem calibração para representar um equipamento específico.
+Todos os indicadores são simulados. Nenhum processo real é encerrado e nenhum consumo real de hardware é medido. A utilização útil de CPU e GPU permanece fixa, isolando a parcela de 90 W adicionada pelo modelo. Essa parcela é um recurso didático, não uma estimativa de consumo de um programa específico.
 
-## Conferência com a metodologia escrita
+A faixa esperada usa as faixas originais da tarefa e a margem de detecção de 15%. O cálculo de potência e a resposta térmica de primeira ordem reutilizam o motor original. Cada cenário avança 180 segundos simulados sem espera real. A temperatura exibida após a intervenção representa o final desse intervalo, não resfriamento instantâneo. O cenário escolhido permanece abaixo dos limiares de instabilidade e não apresenta falhas físicas.
 
-Antes da entrega, confira se o nome e o link do simulador no texto correspondem aos da versão apresentada. Use **índice de desempenho por watt** para descrever a métrica desta versão. Atualize resultados ou figuras anteriores caso tenham sido gerados com o modelo antigo.
+O custo mensal considera potência constante por 8 horas diárias, durante 30 dias, com tarifa ilustrativa padrão de R$ 0,90/kWh. É possível alterar a tarifa em **Premissas e recursos completos**. Não é consulta de tarifa local e não prevê a conta inteira da residência.
+
+Fórmulas:
+
+```text
+energia mensal = potência em W / 1000 × 8 × 30
+custo mensal = energia mensal × tarifa
+redução percentual = (potência antes - potência depois) / potência antes × 100
+economia mensal = custo antes - custo depois
+```
+
+No cenário padrão: 162,4 W antes, 72,4 W depois, redução de 55,4%, economia de 21,60 kWh e R$ 19,44 por mês. Esses números são calculados pelo modelo. A economia usa cenários com a mesma duração mensal, não o histórico acumulado durante os cliques.
+
+## Recursos preservados
+
+Em **Premissas e recursos completos**, abra **Abrir modo completo**. As 19 telas anteriores, os três perfis de computador, as atividades, as recomendações, os relatórios, o teste de estresse e os oito experimentos continuam disponíveis. Use a barra lateral para voltar à demonstração rápida. Os estados do modo completo e da demonstração são independentes.
+
+Os cálculos e o comportamento legado não foram reescritos. As simulações antigas de instabilidade continuam apenas no modo educativo completo, com seus avisos originais. O novo comparativo usa um cálculo próprio e explícito entre dois estados da mesma tarefa. Não depende do percentual histórico do relatório legado.
+
+## Estrutura alterada
+
+* app.py: registro da demonstração como tela inicial e retorno pelo menu.
+* ui/demo.py: painel com quatro indicadores e comparação visual.
+* core/demo.py: fluxo controlado que reutiliza Simulator, inject_waste e apply_decision.
+* .streamlit/config.toml: tema escuro com contraste.
+* tests/: testes de fluxo, cálculos, persistência, tarifa e compatibilidade.
+* docs/: análise inicial, roteiro de apresentação e documentação original.
+
+## Verificação
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+Testes executados com Python 3.12 e Streamlit 1.66.1. São quatro testes que cobrem a detecção, a remoção dos 90 W, a carga útil constante, a economia, as temperaturas, a repetição de cliques, o reinício, a persistência após atualização, a troca de tarifa, o acesso ao modo completo e o funcionamento básico do simulador, relatório e teste de estresse originais.
+
+## Interface para apresentação em hackathon
+
+A demonstração inicial foi reorganizada com uma linguagem mais acessível, indicadores resumidos e comparação visual de antes e depois. O código dos cálculos continua em `core/demo.py` e os demais recursos permanecem disponíveis em **Entenda as premissas e explore o simulador completo**.
+
+O roteiro sugerido para apresentar o projeto à banca está em `docs/ROTEIRO_HACKATHON.md`.

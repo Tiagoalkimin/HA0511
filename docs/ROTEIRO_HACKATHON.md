@@ -1,37 +1,92 @@
-# Roteiro de apresentação em 120 segundos
+# EnergyLens | Roteiro de apresentação para a banca
 
-## 0 a 25 segundos. Problema
+## Objetivo da apresentação
 
-Um computador pode continuar executando a mesma tarefa e consumir energia extra sem que o usuário perceba. O EnergyLens torna essa diferença visível. Este painel é uma simulação controlada, sem medição de hardware real.
+**Duração sugerida: 2 minutos de demonstração e até 1 minuto para perguntas.** Apresente o EnergyLens como um protótipo de simulação, não como um monitor de sensores reais. O foco é mostrar que o consumo extra pode ser detectado e que o impacto de uma intervenção pode ser estimado.
 
-Aponte para os quatro indicadores. O cenário é um computador intermediário usando navegador e documentos. A potência inicial é de aproximadamente 72 W.
+## 00:00 a 00:20 | Apresentar uma situação do cotidiano
 
-## 25 a 55 segundos. Detecção
+**Fala:**
 
-Clique em Simular desperdício.
+> Imagine estar estudando, trabalhando em um documento ou navegando na internet. Tudo parece normal. Mas e se o computador estiver gastando muito mais energia do que precisa, mesmo sem você perceber? Essa é a questão que motivou o EnergyLens.
 
-Adicionamos uma parcela de consumo de processos desnecessários em segundo plano. A potência sobe para cerca de 162 W, embora a carga útil continue igual. O sistema compara esse valor com a faixa esperada para a tarefa e apresenta um alerta.
+**Na tela:** Abra a demonstração no estágio inicial. Aponte o título e depois o indicador *Consumo neste momento*. Não abra configurações nem o modo completo.
 
-Cite um dos exemplos exibidos: aplicativos atualizando em segundo plano, sincronização ou backup na nuvem, vídeos em abas sem uso ou jogos deixados abertos. Explique que atualizações e backups podem ser necessários, e que os 90 W são apenas a parcela ilustrativa do cenário. Aponte para o alerta, para a potência e para a explicação Tarefa simples, consumo excessivo, que aparece nesta etapa. Destaque que a tarefa continua igual, mas há consumo extra sem aumento da carga útil. Não abra os detalhes técnicos.
+## 00:20 a 00:42 | Mostrar o consumo normal
 
-## 55 a 90 segundos. Intervenção
+**Fala:**
 
-Clique em Aplicar otimização.
+> Para mostrar a ideia, montamos uma simulação controlada. Aqui temos um computador intermediário executando uma tarefa simples: navegador e documentos. Os indicadores mostram potência, temperatura, uso do processador e estimativa de custo mensal. Vamos manter exatamente a mesma tarefa durante todo o teste.
 
-O protótipo simula a remoção dessa parcela extra. A potência volta a aproximadamente 72 W. A comparação fica na mesma tela: uma redução de cerca de 55%, mantendo a mesma carga útil no modelo. A temperatura também diminui ao longo de três minutos simulados, calculados sem espera.
+**Na tela:** Aponte brevemente os quatro indicadores. Evite ler todos os números em voz alta.
 
-Aponte para as duas barras e para o percentual.
+## 00:42 a 01:05 | Revelar o problema
 
-## 90 a 120 segundos. Impacto
+**Ação:** Clique em **1. Mostrar consumo extra**.
 
-Com oito horas de uso por dia durante trinta dias, e tarifa ilustrativa de noventa centavos por kWh, a diferença representa 21,6 kWh e R$ 19,44 por mês neste cenário.
+**Fala:**
 
-O EnergyLens conecta o alerta a um efeito que o usuário entende: quanto está consumindo, o que pode corrigir e quanto essa correção representa em energia e custo. A integração com sensores e processos reais seria uma etapa futura, que exigiria medição e validação.
+> Agora adicionamos um consumo de 90 watts, representando processos desnecessários em segundo plano. Podem existir abas esquecidas, aplicativos ativos ou sincronizações que precisam ser investigadas. Percebam: a atividade principal continua igual, mas a potência aumentou. O EnergyLens compara esse consumo com a referência esperada para a tarefa e destaca a anomalia.
 
-## Preparação
+**Na tela:** Aponte o indicador de potência e a mensagem de alerta. Ressalte que os 90 watts são uma hipótese ilustrativa e não uma medição dos aplicativos citados.
 
-1. Instale as dependências antes do evento.
-2. Abra a aplicação e use Reiniciar.
-3. Mantenha o navegador em tela cheia com zoom de 100%.
-4. Faça um ensaio cronometrado. Evite o modo completo durante os dois minutos.
-5. Se a banca pedir detalhes, abra Premissas e recursos completos depois da demonstração.
+## 01:05 a 01:28 | Aplicar a intervenção
+
+**Ação:** Clique em **2. Simular otimização**.
+
+**Fala:**
+
+> O próximo passo é avaliar a intervenção. Nosso modelo simula a remoção desse consumo extra, mantendo a mesma carga útil de CPU e GPU. A comparação aparece imediatamente, com a potência anterior e a posterior. A temperatura também é estimada ao longo de um intervalo simulado, não reduzida de forma instantânea em um equipamento real.
+
+**Na tela:** Mostre as duas barras comparativas. Evite afirmar que o protótipo fechou programas de verdade.
+
+## 01:28 a 01:50 | Traduzir o resultado
+
+**Fala:**
+
+> O principal resultado é que conseguimos traduzir uma diferença técnica em algo que qualquer pessoa entende. Neste exemplo, com oito horas por dia, trinta dias de uso e tarifa de noventa centavos por quilowatt hora, reduzir 90 watts representa 21,6 quilowatts hora, ou R$ 19,44 por mês. É uma projeção condicionada ao cenário, não uma promessa de economia real.
+
+**Na tela:** Aponte o percentual, os kWh e o valor em reais, no painel verde.
+
+## 01:50 a 02:00 | Encerramento
+
+**Fala:**
+
+> O EnergyLens mostra onde pode existir desperdício, ajuda a entender seu impacto e permite comparar intervenções. Nossa próxima etapa seria conectar o modelo a medições reais e validar a detecção em diferentes computadores. Obrigado.
+
+## O que a banca pode perguntar
+
+**O sistema lê o consumo real do computador?**
+
+Não. A versão apresentada é um simulador educativo baseado em perfis e modelos de consumo. A integração com telemetria real é um passo futuro.
+
+**De onde vêm os 90 watts?**
+
+É um valor controlado definido para construir um cenário de consumo extra visível e reproduzível. Não corresponde à medição de nenhum aplicativo específico.
+
+**Por que considerar o resultado confiável dentro da simulação?**
+
+Porque a tarefa principal, o perfil do computador e a carga útil de processamento permanecem iguais. A única mudança deliberada é a parcela extra de consumo. Os testes automatizados verificam essa condição e conferem a projeção de economia.
+
+**O sistema otimiza o computador de verdade?**
+
+Não. Ele executa uma intervenção no próprio modelo. Um produto real exigiria coleta de dados, verificação de processos e procedimentos seguros para sugerir ou aplicar alterações.
+
+**Como é calculada a economia?**
+
+Diferença de potência em kW multiplicada pelas horas de uso e pela tarifa: 0,09 kW × 240 h × R$ 0,90/kWh = R$ 19,44.
+
+**Por que a temperatura muda?**
+
+O modelo térmico estima a evolução da temperatura conforme a potência e a capacidade de resfriamento do computador simulado. Não se trata de termometria real.
+
+## Checklist para o dia
+
+1. Abra o terminal na pasta `EnergyLens`.
+2. Execute `pip install -r requirements.txt` uma vez, antecipadamente.
+3. Inicie a aplicação com `python -m streamlit run app.py`.
+4. Clique em **Recomeçar** antes da apresentação.
+5. Use o navegador em tela cheia (F11), com zoom de 90% ou 100% conforme a resolução.
+6. Ensaie os dois cliques principais até conseguir explicar o resultado sem ler a tela.
+7. Não entre no modo completo durante a demonstração; reserve os detalhes para perguntas da banca.
+8. Se a fonte de texto personalizada não carregar por falta de internet, o sistema utiliza uma fonte alternativa.

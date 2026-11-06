@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 from streamlit.testing.v1 import AppTest
 
-APP = str(Path(__file__).resolve().parents[1] / 'app_original.py')
+APP = str(Path(__file__).resolve().parents[1] / 'app.py')
 
 
 def button(app, label):
