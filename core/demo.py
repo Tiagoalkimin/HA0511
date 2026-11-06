@@ -1,58 +1,69 @@
-"""Três estados da mesma tarefa em um modelo simulado de computador."""
-from dataclasses import dataclass
+"""Demonstração curta, determinística, sobre o simulador original."""
+from copy import deepcopy
 
-from core.energy import compute_power, cost_from_kwh, energy_kwh, expected_power_range
-from core.thermal import AMBIENTE_C, target_temperature, update_temperature
 from models.computer import Computer
-
-HOURS_PER_DAY = 8
-DAYS_PER_MONTH = 30
-TARIFF = 0.90
-THERMAL_INTERVAL_S = 180
-WASTE_W = 90.0
-CPU_RANGE = (8, 18)
-GPU_RANGE = (2, 8)
-BALANCED_LOAD_FACTOR = 0.85
-ANOMALY_MARGIN = 1.15
-
-
-@dataclass(frozen=True)
-class Reading:
-    power_w: float
-    temperature_c: float
-    monthly_kwh: float
-    monthly_cost: float
+from models.activities import get_task
+from core.simulator import Simulator
+from core.energy import cost_projection, expected_power_range
+from core.recommendations import detect_anomaly
 
 
 class QuickDemo:
-    def __init__(self):
-        self.computer = Computer()
-        _, expected_max = expected_power_range(self.computer, CPU_RANGE, GPU_RANGE)
-        self.alert_limit_w = expected_max * ANOMALY_MARGIN
-        self.initial = self._reading(AMBIENTE_C + 5, 0)
-        self.waste = None
-        self.optimized = None
+    TASK = "Navegador + documentos"
+    WASTE_W = 90.0
+    SETTLE_S = 180
 
-    def _reading(self, previous_temp, waste_w):
-        cpu_util = sum(CPU_RANGE) / 2 * BALANCED_LOAD_FACTOR
-        gpu_util = sum(GPU_RANGE) / 2 * BALANCED_LOAD_FACTOR
-        power = compute_power(self.computer, cpu_util, gpu_util, waste_w)["total_w"]
-        target = target_temperature(
-            power, self.computer.max_power_w(), self.computer.thermal_reference_c
-        )
-        temperature = update_temperature(
-            previous_temp, target, THERMAL_INTERVAL_S, self.computer.thermal_tau_s
-        )
-        monthly_kwh = energy_kwh(power, HOURS_PER_DAY * DAYS_PER_MONTH * 3600)
-        return Reading(power, temperature, monthly_kwh, cost_from_kwh(monthly_kwh, TARIFF))
+    def __init__(self, tariff=0.90):
+        self.tariff = tariff
+        self.task_ranges = get_task("leve", self.TASK)
+        # Carga útil fixa: isola o efeito da intervenção, sem variar a tarefa.
+        controlled = {key: (sum(value) / 2,) * 2
+                      for key, value in self.task_ranges.items()}
+        self.sim = Simulator(Computer("intermediario"), "leve", self.TASK,
+                             controlled, tarifa_kwh=tariff)
+        self.sim.advance(self.SETTLE_S, passo=2)
+        self.stage = "normal"
+        self.before = None
+        self.after = None
 
-    def has_anomaly(self, reading):
-        return reading.power_w > self.alert_limit_w
+    def snapshot(self):
+        snap = deepcopy(self.sim.snapshot())
+        expected = expected_power_range(self.sim.computer,
+                                        self.task_ranges["cpu"], self.task_ranges["gpu"])
+        snap["anomaly"] = detect_anomaly(snap["power"]["total_w"], expected)
+        return snap
 
     def inject_waste(self):
-        if self.waste is None:
-            self.waste = self._reading(self.initial.temperature_c, WASTE_W)
+        if self.stage != "normal":
+            return
+        self.sim.inject_waste(self.WASTE_W)
+        # A trilha sem intervenção mantém o MESMO desperdício no comparativo.
+        self.sim.baseline.waste_w = self.WASTE_W
+        self.sim.advance(self.SETTLE_S, passo=2)
+        self.before = self.snapshot()
+        self.stage = "waste"
 
     def optimize(self):
-        if self.waste is not None and self.optimized is None and self.has_anomaly(self.waste):
-            self.optimized = self._reading(self.waste.temperature_c, 0)
+        if self.stage != "waste":
+            return
+        # Decisão já implementada: remove apenas a parcela de processos extras.
+        self.sim.apply_decision("verificar_processos")  # avança 20 s
+        self.sim.advance(self.SETTLE_S - 20, passo=2)
+        self.after = self.snapshot()
+        self.stage = "optimized"
+
+    def comparison(self):
+        if self.after is None:
+            return None
+        before_w = self.before["power"]["total_w"]
+        after_w = self.after["power"]["total_w"]
+        before = cost_projection(before_w, self.tariff)["30d"]
+        after = cost_projection(after_w, self.tariff)["30d"]
+        return {
+            "before_w": before_w, "after_w": after_w,
+            "before_temp": self.before["temp"], "after_temp": self.after["temp"],
+            "reduction_pct": (before_w - after_w) / before_w * 100,
+            "before_month": before, "after_month": after,
+            "saved_kwh": before["kwh"] - after["kwh"],
+            "saved_brl": round(before["custo"] - after["custo"], 2),
+        }
