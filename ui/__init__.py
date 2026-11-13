@@ -1,1 +1,1 @@
-"""Interfaces do EnergyLens."""
+"""Interfaces do EnergySim."""

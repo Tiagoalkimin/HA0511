@@ -30,7 +30,7 @@ class Track:
         self.stress_s = 0.0          # tempo acumulado sob carga alta
         self.performance_pct = 100.0
         self.fps = self.computer.fps_base
-        self.clock_ghz = stress.CLOCK_BASE_GHZ
+        self.clock_ghz = computer.cpu.profile["base_ghz"]
         self.lockups = 0             # travamentos
         self.restarts = 0            # reinicializações ("tela azul")
         self.last_event = None       # última mensagem de evento térmico
@@ -62,7 +62,11 @@ class Track:
         self.stress_s = stress.update_stress_time(self.stress_s, carga, dt_seconds)
         self.performance_pct = stress.compute_performance_pct(self.temp, ref_estado, self.stress_s)
         self.fps = stress.fps_educativo(self.performance_pct, self.computer.fps_base)
-        self.clock_ghz = stress.clock_ghz_ilustrativo(self.temp, ref_estado, carga)
+        self.clock_ghz = stress.clock_ghz_ilustrativo(
+            self.temp, ref_estado, cpu_util / 100.0,
+            self.computer.cpu.profile["base_ghz"],
+            self.computer.cpu.profile["boost_ghz"],
+        )
 
         evento = stress.check_thermal_event(self.temp, ref_estado)
         if evento["travou"]:

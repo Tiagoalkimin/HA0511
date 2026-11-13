@@ -9,6 +9,8 @@ COMPUTER_PRESETS = {
         "nome": "PC de Entrada",
         "descricao": "CPU básica + GPU integrada + refrigeração simples.",
         "cpu_tier": "entrada",
+        "ram": "8 GB DDR4 3200 MHz",
+        "storage": "SSD SATA 240 GB",
         "gpu_tier": "integrada",
         "fps_base": 70,
         "aletas_dissipador": 2,
@@ -19,6 +21,8 @@ COMPUTER_PRESETS = {
         "nome": "PC Intermediário",
         "descricao": "CPU intermediária + GPU dedicada intermediária.",
         "cpu_tier": "intermediario",
+        "ram": "16 GB DDR4 3200 MHz",
+        "storage": "SSD NVMe 500 GB",
         "gpu_tier": "dedicada_intermediaria",
         "fps_base": 100,
         "aletas_dissipador": 5,
@@ -29,6 +33,8 @@ COMPUTER_PRESETS = {
         "nome": "PC Premium",
         "descricao": "CPU de alto desempenho + GPU dedicada de ponta.",
         "cpu_tier": "premium",
+        "ram": "32 GB DDR4 3200 MHz",
+        "storage": "SSD NVMe 1 TB",
         "gpu_tier": "dedicada_alta",
         "fps_base": 140,
         "aletas_dissipador": 9,
@@ -60,3 +66,19 @@ class Computer:
 
     def max_power_w(self) -> float:
         return self.cpu.max_w() + self.gpu.max_w() + self.extras_w
+
+
+def hardware_details(computer):
+    """Ficha única usada na demonstração e na seleção de computadores."""
+    p = computer.cpu.profile
+    spec = COMPUTER_PRESETS[computer.preset_key]
+    return [
+        ("Processador", computer.cpu.nome),
+        ("Núcleos e threads", f"{p['cores']} núcleos / {p['threads']} threads"),
+        ("Clock base", f"{p['base_ghz']:.2f} GHz".replace(".", ",")),
+        ("Turbo máximo", f"Até {p['boost_ghz']:.2f} GHz".replace(".", ",")),
+        ("Placa de vídeo", computer.gpu.nome),
+        ("Memória RAM", spec['ram']),
+        ("Armazenamento", spec['storage']),
+        ("Refrigeração", computer.cooling['nome']),
+    ]

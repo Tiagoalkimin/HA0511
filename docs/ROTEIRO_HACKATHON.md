@@ -1,14 +1,14 @@
-# EnergyLens | Roteiro de apresentação para a banca
+# EnergySim | Roteiro de apresentação para a banca
 
 ## Objetivo da apresentação
 
-**Duração sugerida: 2 minutos de demonstração e até 1 minuto para perguntas.** Apresente o EnergyLens como um protótipo de simulação, não como um monitor de sensores reais. O foco é mostrar que o consumo extra pode ser detectado e que o impacto de uma intervenção pode ser estimado.
+**Duração sugerida: 2 minutos de demonstração e até 1 minuto para perguntas.** Apresente o EnergySim como um protótipo de simulação, não como um monitor de sensores reais. O foco é mostrar que o consumo extra pode ser detectado e que o impacto de uma intervenção pode ser estimado.
 
 ## 00:00 a 00:20 | Apresentar uma situação do cotidiano
 
 **Fala:**
 
-> Imagine estar estudando, trabalhando em um documento ou navegando na internet. Tudo parece normal. Mas e se o computador estiver gastando muito mais energia do que precisa, mesmo sem você perceber? Essa é a questão que motivou o EnergyLens.
+> Imagine estar estudando, trabalhando em um documento ou navegando na internet. Tudo parece normal. Mas e se o computador estiver gastando muito mais energia do que precisa, mesmo sem você perceber? Essa é a questão que motivou o EnergySim.
 
 **Na tela:** Abra a demonstração no estágio inicial. Aponte o título e depois o indicador *Consumo neste momento*. Não abra configurações nem o modo completo.
 
@@ -26,7 +26,7 @@
 
 **Fala:**
 
-> Agora adicionamos um consumo de 90 watts, representando processos desnecessários em segundo plano. Podem existir abas esquecidas, aplicativos ativos ou sincronizações que precisam ser investigadas. Percebam: a atividade principal continua igual, mas a potência aumentou. O EnergyLens compara esse consumo com a referência esperada para a tarefa e destaca a anomalia.
+> Agora adicionamos um consumo de 90 watts, representando processos desnecessários em segundo plano. Podem existir abas esquecidas, aplicativos ativos ou sincronizações que precisam ser investigadas. Percebam: a atividade principal continua igual, mas a potência aumentou. O EnergySim compara esse consumo com a referência esperada para a tarefa e destaca a anomalia.
 
 **Na tela:** Aponte o indicador de potência e a mensagem de alerta. Ressalte que os 90 watts são uma hipótese ilustrativa e não uma medição dos aplicativos citados.
 
@@ -52,7 +52,7 @@
 
 **Fala:**
 
-> O EnergyLens mostra onde pode existir desperdício, ajuda a entender seu impacto e permite comparar intervenções. Nossa próxima etapa seria conectar o modelo a medições reais e validar a detecção em diferentes computadores. Obrigado.
+> O EnergySim mostra onde pode existir desperdício, ajuda a entender seu impacto e permite comparar intervenções. Nossa próxima etapa seria conectar o modelo a medições reais e validar a detecção em diferentes computadores. Obrigado.
 
 ## O que a banca pode perguntar
 
@@ -82,7 +82,7 @@ O modelo térmico estima a evolução da temperatura conforme a potência e a ca
 
 ## Checklist para o dia
 
-1. Abra o terminal na pasta `EnergyLens`.
+1. Abra o terminal na pasta `EnergySim`.
 2. Execute `pip install -r requirements.txt` uma vez, antecipadamente.
 3. Inicie a aplicação com `python -m streamlit run app.py`.
 4. Clique em **Recomeçar** antes da apresentação.

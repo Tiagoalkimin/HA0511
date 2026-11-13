@@ -1,4 +1,4 @@
-# ⚡ EnergyLens — Simulador de Consumo Energético de Computadores
+# ⚡ EnergySim — Simulador de Consumo Energético de Computadores
 
 Protótipo de Hackathon (Engenharia da Computação) que demonstra, de forma
 visual e interativa, a cadeia:

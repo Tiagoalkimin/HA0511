@@ -2,17 +2,17 @@
 
 GPU_PROFILES = {
     "integrada": {
-        "nome": "GPU Integrada",
+        "nome": "Intel UHD Graphics 730 (integrada, memória compartilhada)",
         "idle_w": 2,
         "max_w": 20,
     },
     "dedicada_intermediaria": {
-        "nome": "GPU Dedicada Intermediária",
+        "nome": "NVIDIA GeForce GTX 1660 SUPER (6 GB GDDR6)",
         "idle_w": 12,
         "max_w": 160,
     },
     "dedicada_alta": {
-        "nome": "GPU Dedicada de Alto Desempenho",
+        "nome": "NVIDIA GeForce RTX 3080 (10 GB GDDR6X)",
         "idle_w": 18,
         "max_w": 320,
     },

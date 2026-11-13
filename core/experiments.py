@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""LABORATÓRIO DE EXPERIMENTOS do EnergyLens.
+"""LABORATÓRIO DE EXPERIMENTOS do EnergySim.
 
 Cada experimento roda o MESMO motor da simulação principal (Track, energy,
 thermal, stress) com uma carga controlada e devolve tabelas, séries para

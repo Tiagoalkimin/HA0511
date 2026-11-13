@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""EnergyLens — Simulador de Consumo Energético de Computadores
+"""EnergySim — Simulador de Consumo Energético de Computadores
 Projeto de Hackathon de Engenharia da Computação.
 
 Rode com: streamlit run app.py
@@ -8,7 +8,7 @@ Rode com: streamlit run app.py
 import streamlit as st
 import pandas as pd
 
-from models.computer import Computer, COMPUTER_PRESETS
+from models.computer import hardware_details, Computer, COMPUTER_PRESETS
 from models.activities import ACTIVITIES, get_task
 from core.simulator import Simulator, StressTest
 from core import report as report_mod
@@ -16,7 +16,7 @@ from core import stress as stress_mod
 from core import experiments as exp_mod
 from ui.demo import render_demo
 
-st.set_page_config(page_title="EnergyLens", page_icon="⚡", layout="wide")
+st.set_page_config(page_title="EnergySim", page_icon="⚡", layout="wide")
 
 SCREENS = [
     "demo",
@@ -64,7 +64,7 @@ def nav_buttons(prev_key=None, next_key=None, next_label="Continuar →", prev_l
 
 # ========================================================== TELA: PROBLEMA ==
 def screen_intro_problema():
-    st.title("⚡ EnergyLens")
+    st.title("⚡ EnergySim")
     st.subheader("Qual é o problema?")
     st.markdown("""
 Todo computador **consome energia elétrica** — mas essa quantidade não é fixa.
@@ -220,6 +220,8 @@ ar**, mais calor ele consegue transferir para fora.
 # ======================================================= TELA: ESCOLHER PC ==
 def screen_selecionar_pc():
     st.title("Escolha o computador")
+    st.caption("Configurações de referência para estudo. Consumo, temperatura e clock em execução são estimativas didáticas, sem leitura do seu computador.")
+    st.info("Clock base e turbo são diferentes. O turbo é um limite eventual, não uma frequência constante em todos os núcleos. GHz isoladamente não determina o desempenho.")
     cols = st.columns(3)
     escolhido = None
     for col, key in zip(cols, COMPUTER_PRESETS.keys()):
@@ -229,9 +231,8 @@ def screen_selecionar_pc():
             with st.container(border=True):
                 st.markdown(f"### {preset['nome']}")
                 st.caption(preset["descricao"])
-                st.write(f"**CPU:** {c_tier.cpu.nome}")
-                st.write(f"**GPU:** {c_tier.gpu.nome}")
-                st.write(f"**Refrigeração:** {c_tier.cooling['nome']}")
+                for label, value in hardware_details(c_tier):
+                    st.write(f"**{label}:** {value}")
                 st.write(f"**Consumo máx. estimado:** {c_tier.max_power_w():.0f} W")
                 st.caption(
                     f"📐 Dissipador com ~{c_tier.aletas_dissipador} aletas · "
@@ -949,7 +950,7 @@ if st.session_state.screen != "demo":
     with st.sidebar:
         if st.button("Voltar à demonstração rápida"):
             goto("demo")
-        st.markdown("### ⚡ EnergyLens")
+        st.markdown("### ⚡ EnergySim")
         st.caption("Simulador educativo de consumo energético")
         st.progress((SCREENS.index(st.session_state.screen) + 1) / len(SCREENS))
         st.caption(f"Etapa {SCREENS.index(st.session_state.screen)+1} de {len(SCREENS)}")

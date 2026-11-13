@@ -1,4 +1,4 @@
-# EnergyLens
+# EnergySim
 
 Demonstração de desperdício de energia em computadores para apresentação de aproximadamente dois minutos. Abre diretamente no painel, sem cadastro ou configuração prévia.
 

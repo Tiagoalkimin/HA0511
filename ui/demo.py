@@ -1,7 +1,8 @@
-"""Demonstração de palco do EnergyLens. Cálculos preservados em core/demo.py."""
+"""Demonstração de palco do EnergySim. Cálculos preservados em core/demo.py."""
 import html
 import streamlit as st
 from core.demo import QuickDemo
+from models.computer import hardware_details
 from core.energy import cost_projection
 
 
@@ -18,6 +19,12 @@ def render_demo():
     [data-testid="stHeader"] {background:transparent;}
     [data-testid="stVerticalBlock"] {gap:.8rem;}
     h1,h2,h3,p {font-family:'DM Sans',sans-serif;}
+    .el-hardware {background:#fff;border:1px solid #d4dfd6;border-radius:16px;padding:18px 20px;margin:12px 0;}
+    .el-hardware h3 {font-size:1rem;margin:0 0 14px;}
+    .el-specs {display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
+    .el-spec small {display:block;color:#687a72;font-size:.78rem;}
+    .el-spec b {display:block;font-size:.88rem;color:#253f37;}
+    .el-hardware p {font-size:.76rem;color:#72837a;margin:14px 0 0;}
     .el-kicker {font-size:.79rem;font-weight:800;letter-spacing:.12em;color:#38786a;text-transform:uppercase;margin-bottom:12px;}
     .el-hero {display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:8px;}
     .el-title {font-family:'Manrope',sans-serif;font-size:clamp(2.1rem,4vw,3.35rem);font-weight:800;line-height:1.12;letter-spacing:-.055em;color:#203d37;margin:0 0 10px;}
@@ -81,13 +88,19 @@ def render_demo():
     st.markdown('''<div class="el-hero"><div><div class="el-kicker">Tecnologia para consumir com consciência</div>
        <div class="el-title">Energia que você não vê.<br>Economia que você sente.</div>
        <p class="el-sub">Descubra como atividades em segundo plano podem aumentar o consumo do computador, mesmo quando a sua tarefa não muda.</p></div>
-       <div class="el-brand"><span>✦</span> EnergyLens</div></div>''', unsafe_allow_html=True)
+       <div class="el-brand"><span>✦</span> EnergySim</div></div>''', unsafe_allow_html=True)
     steps = [("Observe", "Como o computador está agora"), ("Identifique", "O que está consumindo a mais"), ("Compare", "O resultado da otimização")]
     segments = []
     for i, (title, desc) in enumerate(steps):
         segments.append(f'<div class="el-step {"active" if i == index else ""}"><span class="el-num">{i+1}</span><div><b>{title}</b><small>{desc}</small></div></div>')
     st.markdown('<div class="el-steps">'+''.join(segments)+'</div>', unsafe_allow_html=True)
     st.markdown('<div class="el-context"><strong>Nosso cenário:</strong> computador intermediário, navegador e documentos abertos. A tarefa permanece igual nos três momentos.</div>', unsafe_allow_html=True)
+    specs = hardware_details(demo.sim.computer)
+    cards = ''.join(
+        f'<div class="el-spec"><small>{html.escape(label)}</small><b>{html.escape(value)}</b></div>'
+        for label, value in specs
+    )
+    st.markdown('<div class="el-hardware"><h3>Computador desta simulação</h3><div class="el-specs">' + cards + '</div><p>Configuração de referência. Não é uma detecção do seu computador. Turbo é um limite eventual; consumo, temperatura e clock são estimativas didáticas.</p></div>', unsafe_allow_html=True)
     kpis = [
         ("Consumo neste momento", f"{br(power, 1)} W", "Potência elétrica estimada"),
         ("Temperatura", f"{br(snap['temp'], 1)} °C", "Valor estimado pelo modelo"),
@@ -99,7 +112,7 @@ def render_demo():
     if stage == "normal":
         story = ("🌿", "Tudo dentro do esperado", "O computador está executando tarefas simples. Agora vamos mostrar o que acontece quando processos extras consomem energia sem contribuir para o trabalho.", "")
     elif stage == "waste":
-        story = ("⚠️", "Algo está gastando energia sem necessidade", f"A tarefa continua a mesma, mas há {br(snap['power']['waste_w'], 0)} W extras no cenário simulado. Pense em abas com vídeos, programas esquecidos, atualizações ou sincronizações desnecessárias. O EnergyLens sinaliza essa diferença para investigação.", "warning")
+        story = ("⚠️", "Algo está gastando energia sem necessidade", f"A tarefa continua a mesma, mas há {br(snap['power']['waste_w'], 0)} W extras no cenário simulado. Pense em abas com vídeos, programas esquecidos, atualizações ou sincronizações desnecessárias. O EnergySim sinaliza essa diferença para investigação.", "warning")
     else:
         story = ("✓", "Mesmo trabalho, menor consumo", "A intervenção simulada eliminou a parcela adicional de energia. A carga útil de CPU e GPU foi preservada. Veja a comparação e o efeito projetado no custo.", "good")
     ico, title, desc, kind = story

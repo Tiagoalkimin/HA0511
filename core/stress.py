@@ -37,7 +37,8 @@ def update_stress_time(stress_s: float, carga: float, dt: float) -> float:
     return max(0.0, stress_s - dt * 0.5)
 
 
-def clock_ghz_ilustrativo(temp: float, temp_max_ref: float, carga: float) -> float:
+def clock_ghz_ilustrativo(temp: float, temp_max_ref: float, carga: float, base_ghz: float = CLOCK_BASE_GHZ,
+                          boost_ghz: float = CLOCK_BOOST_GHZ) -> float:
     """Frequência de clock MERAMENTE ILUSTRATIVA.
 
     Serve só para mostrar, de forma simplificada, que o computador pode reduzir
@@ -45,7 +46,7 @@ def clock_ghz_ilustrativo(temp: float, temp_max_ref: float, carga: float) -> flo
     O quartzo NÃO é o responsável por essa variação — ele fornece apenas uma
     referência de tempo estável para os circuitos (ver tela sobre o quartzo).
     """
-    alvo = CLOCK_BASE_GHZ + (CLOCK_BOOST_GHZ - CLOCK_BASE_GHZ) * carga
+    alvo = base_ghz + (boost_ghz - base_ghz) * max(0.0, min(1.0, carga))
     limiar = temp_max_ref * 0.85
     if temp > limiar:
         excesso = min(1.0, (temp - limiar) / (temp_max_ref * 0.20 + 1e-6))
